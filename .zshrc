@@ -90,13 +90,16 @@ alias -g GI='| grep -ri'
 # エイリアス
 alias lst='ls -ltr --color=auto'
 alias l='ls -ltr --color=auto'
-alias la='ls -la --color=auto'
-alias ll='ls -l --color=auto'
+alias ll='ls -la --color=auto'
 alias so='source'
 alias v='vim'
 alias vi='vim'
 alias vz='vim ~/.zshrc'
+alias vc='vim ~/.vimrc'
+alias vd='vim ~/.vim/rc/dein.toml'
 alias c='cdr'
+alias cdb='cd ~/Dropbox/markdown'
+
 # historyに日付を表示
 alias h='fc -lt '%F %T' 1'
 alias cp='cp -i'
@@ -128,8 +131,6 @@ export SDKMAN_DIR="/home/yoichiro/.sdkman"
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
-
-
 # エイリアス
 alias lst='ls -ltr --color=auto'
 alias l='ls -ltr --color=auto'
@@ -158,4 +159,8 @@ fpath=(~/.zsh/completion $fpath)
 autoload -U compinit
 compinit -u
 
+# phantomjs
+export PHANTOM_JS="phantomjs-2.1.1-linux-x86_64"
 
+# gibo
+export PATH="$HOME/bin:$PATH"

@@ -1,9 +1,3 @@
-" -------------------------------
-" Rsense
-" -------------------------------
- let g:rsenseHome = '/usr/local/lib/rsense-0.3'
- let g:rsenseUseOmniFunc = 1
-
 " --------------------------------
 " rubocop
 " --------------------------------
@@ -49,6 +43,9 @@ set hidden
 " 入力中のコマンドをステータスに表示する
 set showcmd
 
+" クリップボード共有
+set clipboard=unnamedplus
+
 
 " 見た目系
 " 行番号を表示
@@ -56,7 +53,7 @@ set number
 " 現在の行を強調表示
 set cursorline
 " 現在の行を強調表示（縦）
-set cursorcolumn
+"set cursorcolumn
 " 行末の1文字先までカーソルを移動できるように
 set virtualedit=onemore
 " インデントはスマートインデント
@@ -72,12 +69,6 @@ set wildmode=list:longest
 " 折り返し時に表示行単位での移動できるようにする
 " nnoremap j gj
 " nnoremap k gk
-
-" カーソル移動
-noremap <C-e> <Esc>$a
-inoremap <C-a> <Esc>^a
-noremap <C-e> <Esc>$a
-noremap <C-a> <Esc>^a
 
 " Tab系
 " 不可視文字を可視化(タブが「▸-」と表示される)
@@ -150,20 +141,18 @@ set hlsearch
 " ESC連打でハイライト解除
 nmap <Esc><Esc> :nohlsearch<CR><Esc>
 
-" http://blog.remora.cx/2010/12/vim-ref-with-unite.html
 """"""""""""""""""""""""""""""
 " Unit.vimの設定
 """"""""""""""""""""""""""""""
-" 入力モードで開始する
+
 let g:unite_enable_start_insert=1
-" バッファ一覧
-noremap <C-P> :Unite buffer<CR>
-" ファイル一覧
-noremap <C-N> :Unite -buffer-name=file file<CR>
-" 最近使ったファイルの一覧
-noremap <C-Z> :Unite file_mru<CR>
-" sourcesを「今開いているファイルのディレクトリ」とする
-noremap :uff :<C-u>UniteWithBufferDir file -buffer-name=file<CR>
+let g:unite_source_history_yank_enable =1
+let g:unite_source_file_mru_limit = 200
+nnoremap <silent> ,uy :<C-u>Unite history/yank<CR>
+nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
+nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
+nnoremap <silent> ,uu :<C-u>Unite file_mru buffer<CR>
 " ウィンドウを分割して開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
 au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
@@ -174,8 +163,6 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vspli
 au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
 au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
 """"""""""""""""""""""""""""""
-
-
 
 " ++++++++++++ dein +++++++++++++++++++++
 " プラグインが実際にインストールされるディレクトリ
@@ -216,84 +203,53 @@ call dein#install()
   endif
 
 syntax on
-colorscheme molokai
 set t_Co=256
 
-
-
-"# neocomplete
-"Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+" neocomplcacheの設定
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
+
+" Use neocomplcache.
+let g:neocomplcache_enable_at_startup = 1
+
 " Use smartcase.
-let g:neocomplete#enable_smart_case = 1
+let g:neocomplcache_enable_smart_case = 1
+
 " Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
+let g:neocomplcache_enable_camel_case_completion = 1
+let g:neocomplcache_enable_underbar_completion = 1
 
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
+" Rsense用の設定
+if !exists('g:neocomplcache_omni_patterns')
+    let g:neocomplcache_omni_patterns = {}
 endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
+"rsenseのインストールフォルダがデフォルトと異なるので設定
+let g:rsenseHome = expand("/home/yoichiro/.rbenv/shims/rsense")
+let g:rsenseUseOmniFunc = 1
 
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? "\<C-y>" : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+" vim markdown runtime files
+let g:markdown_fenced_languages = ['html', 'ruby','javascript', 'bash=sh']
 
-" AutoComplPop like behavior.
-"let g:neocomplete#enable_auto_select = 1
+" vim esa-io
+let g:esa_team = 'beaglesoft'
 
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplete#enable_auto_select = 1
-"let g:neocomplete#disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+" vim-ruby-refactoring key map
+:nnoremap <leader>rap  :RAddParameter<cr>
+:nnoremap <leader>rcpc :RConvertPostConditional<cr>
+:nnoremap <leader>rel  :RExtractLet<cr>
+:vnoremap <leader>rec  :RExtractConstant<cr>
+:vnoremap <leader>relv :RExtractLocalVariable<cr>
+:nnoremap <leader>rit  :RInlineTemp<cr>
+:vnoremap <leader>rrlv :RRenameLocalVariable<cr>
+:vnoremap <leader>rriv :RRenameInstanceVariable<cr>
+:vnoremap <leader>rem  :RExtractMethod<cr>
 
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'"
-
-
-
-
+" vim-tags
+let g:vim_tags_project_tags_command = "/usr/local/bin/ctags -R {OPTIONS} {DIRECTORY} 2>/dev/null"
+let g:vim_tags_gems_tags_command = "/usr/bin/ctags -R {OPTIONS} `bundle show --paths` 2>/dev/null"

@@ -64,7 +64,6 @@ repo = 'tpope/vim-surround'
 [[plugins]]
 repo = 'nathanaelkane/vim-indent-guides'
 
-
 [[plugins]]
 repo = 'vim-scripts/AnsiEsc.vim'
 
@@ -77,4 +76,27 @@ repo = 'vim-scripts/taglist.vim'
 [[plugins]]
 repo = 'Shougo/neocomplcache.vim'
 
+[[plugins]]
+repo = 'Shougo/neocomplcache-rsense.vim'
 
+[[plugins]]
+repo = 'tpope/vim-markdown'
+
+[[plugins]]
+repo= 'mattn/webapi-vim'
+
+[[plugins]]
+repo = 'upamune/esa.vim'
+depends = ['mattn/webapi-vim']
+
+[[plugins]]
+repo = 'vim-scripts/dbext.vim'
+
+[[plugins]]
+repo = 'ecomba/vim-ruby-refactoring'
+
+[[plugins]]
+repo = 'szw/vim-tags'
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
