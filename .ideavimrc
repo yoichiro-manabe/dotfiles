@@ -1,0 +1,21 @@
+
+# クリップボードの共有
+set clipboard=unnamed
+set clipboard=unnamedplus
+
+nnoremap yy "+yy
+vnoremap y "+y
+
+nnoremap p "+p
+vnoremap p "+p
+nnoremap P "+P
+vnoremap P "+P
+
+" 日本語入力切り替え設定
+" 日本語入力をEscapeでOffにする
+function! ImInActivate()
+  call system('fcitx-remote -c')
+endfunction
+inoremap <silent> <C-[> <ESC>:call ImInActivate()<CR>
+
+set 'vim-surround'
