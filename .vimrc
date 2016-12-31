@@ -80,6 +80,12 @@ set tabstop=2
 " 行頭でのTab文字の表示幅
 set shiftwidth=2
 
+" 日本語入力切り替え設定
+" 日本語入力をEscapeでOffにする
+function! ImInActivate()
+  call system('fcitx-remote -c')
+endfunction
+inoremap <silent> <C-[> <ESC>:call ImInActivate()<CR>
 
 "---------------------------------------------------
 " Configration: ペースト設定 Paste
