@@ -2,165 +2,93 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/yoichiro/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="bira"
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+ZSH_THEME="robbyrussell"
 HIST_STAMPS="yyyy/mm/dd"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ruby bundler rails)
+plugins=(git osx emoji-clock ruby)
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-
-# グローバルエイリアス
-alias -g L='| less'
-alias -g H='| head'
-alias -g G='| grep'
-alias -g GI='| grep -ri'
-
-# エイリアス
-alias lst='ls -ltr --color=auto'
-alias l='ls -ltr --color=auto'
-alias ll='ls -la --color=auto'
-alias so='source'
-alias v='vim'
-alias vi='vim'
+# zshrcの編集
 alias vz='vim ~/.zshrc'
-alias vc='vim ~/.vimrc'
-alias vd='vim ~/.vim/rc/dein.toml'
-alias c='cdr'
-alias cdb='cd ~/Dropbox/markdown'
 
-# historyに日付を表示
-alias h='fc -lt '%F %T' 1'
-alias cp='cp -i'
-alias rm='rm -i'
-alias mkdir='mkdir -p'
-alias ..='c ../'
-alias back='pushd'
-alias diff='diff -U1'
+# zshrcの反映
+alias sz='source ~/.zshrc'
 
-alias bv='bundle -v'
-alias be='bundle exec'
+# ssh_configの編集
+alias vs='vim ~/.ssh/config'
 
-# cdの後にlsを実行
-chpwd() { ls -ltr --color=auto }
+alias br='brew'
+alias nb='nodebrew'
 
-# コード補完
-fpath=(~/.zsh/completion $fpath)
+# sshpass
+alias sshpass='sshpass -f .sshpwd'
 
-# Ctrl+rでヒストリーのインクリメンタルサーチ、Ctrl+sで逆順
-bindkey '^r' history-incremental-pattern-search-backward
-bindkey '^s' history-incremental-pattern-search-forward
+# ワイルドカード保管を防ぐため
+setopt nonomatch
 
-autoload -U compinit
-compinit -u
+#export PATH=/usr/local/bin:/usr/bin:$PATH
+
+# zmv
+autoload -Uz zmv
+alias zmv='noglob zmv -W'
+
+# nodebrew
+export PATH=$HOME/.nodebrew/current/bin:$PATH
+
+export PATH=/usr/local/Cellar/vim/8.1.0050/bin/vim:$PATH
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/amazon-corretto-8.jdk/Contents/Home
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/yoichiro/.sdkman"
-[[ -s "/home/yoichiro/.sdkman/bin/sdkman-init.sh" ]] && source "/home/yoichiro/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_DIR="~/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# nodebrew
+export PATH=$PATH:$HOME/.nodebrew/current/bin
+
+# aspnetcore
+export ASPNETCORE_ENVIRONMENT=Development
+export ASPNETCORE_URLS=http://localhost:5000
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f $HOME/.nodebrew/node/v8.11.1/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . $HOME/.nodebrew/node/v8.11.1/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f $HOME/.nodebrew/node/v8.11.1/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . $HOME/.nodebrew/node/v8.11.1/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+
+export PATH="$HOME/.rbenv/shims:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
+
+alias rails='bundle exec rails'
+alias rake='bundle exec rake'
+alias be='bundle exec'
+alias ber='be rake db:drop;be rake db:create;be rake db:migrate;be rake db:seed;'
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+export PATH=$PATH:./node_modules/.bin
 eval "$(rbenv init -)"
 
-# エイリアス
-alias lst='ls -ltr --color=auto'
-alias l='ls -ltr --color=auto'
-alias la='ls -la --color=auto'
-alias ll='ls -l --color=auto'
-alias so='source'
-alias v='vim'
-alias vi='vim'
-alias vz='vim ~/.zshrc'
-alias c='cdr'
-# historyに日付を表示
-alias h='fc -lt '%F %T' 1'
-alias cp='cp -i'
-alias rm='rm -i'
-alias mkdir='mkdir -p'
-alias ..='c ../'
-alias back='pushd'
-alias diff='diff -U1'
+# Create as alias for nuget
+alias nuget="mono /usr/local/bin/nuget.exe"
 
-alias bv='bundle -v'
-alias be='bundle exec'
+# pyenv
+export PYENV_ROOT=${HOME}/.pyenv
+if [ -d "${PYENV_ROOT}" ]; then
+    export PATH=${PYENV_ROOT}/bin:$PATH
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
 
-# git-completion
-fpath=(~/.zsh/completion $fpath)
+# RabbitMQ
+export PATH=$PATH:/usr/local/sbin
 
-autoload -U compinit
-compinit -u
+export MAX_JSON_CONTENT_LENGTH=1048576
+export UPLOAD_DIR_PATH=/tmp/
 
-# phantomjs
-export PHANTOM_JS="phantomjs-2.1.1-linux-x86_64"
-
-# gibo
-export PATH="$HOME/bin:$PATH"
